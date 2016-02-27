@@ -2,6 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
+
+#define ERR_EXIT(m) \
+	do { \
+		perror(m); \
+		exit(EXIT_FAILURE); \
+	} while(0)
 
 
 char inputline[1024] = {0};
@@ -34,20 +41,82 @@ void showhint()
 
 int getcmd()
 {
-
+	memset(inputline,0,sizeof(inputline));
 	fgets(inputline,sizeof(inputline),stdin);
 	inputline[strlen(inputline) - 1] = 0; //替换掉末尾的'\n'
 	return 0;
 }
 
+#define MAXARGS 10
+char *argv[MAXARGS+1]; 	
+int arg_count; //解析出来的参数个数
+
 int parsecmd()
 {
+	int len = strlen(inputline);
+	int i;
+
+	//将inputline中所有的空字符替换为'\0'
+	for(i = 0;i<len;i++)
+	{
+		if(inputline[i] == ' ' || inputline[i] == '\t')
+			inputline[i] = 0;
+	}
+
+	/* 将每个参数解析出来.  */
+	arg_count = 0; /* 每次都要先设置为0.  */
+	for(i=0;i<len;i++)
+	{
+		if(i == 0)
+		{
+			if(inputline[i] != 0)
+				argv[arg_count++] = &inputline[i];
+		}
+		else if(inputline[i-1] == 0 && inputline[i] != 0)
+		{
+			argv[arg_count++] = &inputline[i];
+		}
+	}
+	argv[arg_count] = NULL;
+
 	return 0;
+}
+
+/* just for debug.*/
+void print_args()
+{
+	int i;
+	
+	printf("-----start-------\n");
+	for(i = 0;i<arg_count;i++)
+	{
+		printf("%s\n",argv[i]);
+	}
+	printf("-----end-------\n");
 }
 
 int execmd()
 {
-	printf("%s\n",inputline);
+
+#ifdef DEBUG
+	print_args();
+#endif
+
+	pid_t pid;
+	int status;
+
+	if((pid = fork()) == -1)
+	{
+		ERR_EXIT("fork");
+	}
+	
+	if(pid == 0)
+	{
+		execvp(argv[0],argv);
+	}
+
+	waitpid(pid,&status,0);
+
 	return 0;
 }
 
