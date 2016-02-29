@@ -44,5 +44,11 @@ extern	char 	infile[MAXNAME+1];
 /* 输出重定向文件名. */
 extern	char 	outfile[MAXNAME+1];
 
+extern char *inputptr;
+extern char *fmtptr;
+extern int append;
+extern int background;
+
+void print_args();
 
 #endif /* _DEF_H_ */

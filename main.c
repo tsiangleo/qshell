@@ -11,6 +11,11 @@ char 	fmtline[MAXLINE+1];
 char 	infile[MAXNAME+1];
 char 	outfile[MAXNAME+1];
 
+char *inputptr;//自动机的指针执行输入串的某个位置.
+char *fmtptr;
+int append;
+int background;
+
 int main()
 {
 	/*
@@ -23,7 +28,7 @@ int main()
 	{
 		init();
 		get_cmd();
-		parse_cmd2();
+		parse_cmd();
 		exec_cmd();
 	}
 	return 0;

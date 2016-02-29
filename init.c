@@ -42,6 +42,7 @@ void init()
 	memset(fmtline,0,sizeof(fmtline));
 	memset(infile,0,sizeof(infile));
 	memset(outfile,0,sizeof(outfile));
-
+	fmtptr = fmtline;
+	inputptr = inputline;
 	show_hint();
 }
