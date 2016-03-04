@@ -12,16 +12,15 @@ char 	fmtline[MAXLINE+1];
 char 	infile[MAXNAME+1];
 char 	outfile[MAXNAME+1];
 
-char *inputptr;//自动机的指针执行输入串的某个位置.
+char *inputptr;
 char *fmtptr;
 int append;
 int background;
 int lastcpid;
 
-
-char hostname[MAXLINE];	//主机名字
-char username[MAXLINE];	//登陆名
-char cwd[MAXLINE];	//当前工作目录
+char hostname[MAXLINE];
+char username[MAXLINE];
+char cwd[MAXLINE];
 char *homedir;
 
 

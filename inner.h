@@ -6,4 +6,4 @@
 int inner();
 
 
-#endif /*_INNERCMD_H_ */
+#endif /*_INNER_H_ */

@@ -28,7 +28,7 @@ void get_cwd()
 		perror("getcwd");
 }
 
-/* 输出提示行信息:"username@hostname:cwd$ " */
+/* 输出提示行信息。格式为:"username@hostname:cwd$ " */
 void show_hint()
 {
 	get_cwd();
@@ -38,8 +38,6 @@ void show_hint()
 	else
 		printf("%s@%s:%s$$ ",username,hostname,cwd);
 	fflush(stdout);
-//	printf("[qshell]$ ");
-//	fflush(stdout);
 }
 
 
@@ -49,7 +47,7 @@ void sigint_handler(int sig)
 	show_hint();
 }
 
-/* 安装信号. */
+
 void setup()
 {
 	signal(SIGINT,sigint_handler);

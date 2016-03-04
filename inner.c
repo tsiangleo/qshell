@@ -13,6 +13,18 @@ typedef struct inner_cmd
 } inner_cmd_t;
 
 
+void handler_exit();
+void handler_cd();
+void handler_help();
+
+inner_cmd_t innercmds[] =
+{
+	{"exit",handler_exit},
+	{"cd",handler_cd},
+	{"help",handler_help},
+	{NULL,NULL},
+};
+
 void handler_exit()
 {
 	printf("exit\n");		
@@ -54,14 +66,15 @@ void handler_cd()
 		cwd_to(path);
 }
 
-inner_cmd_t innercmds[] =
+void handler_help()
 {
-	{"exit",handler_exit},
-	{"quit",handler_exit},
-	{"cd",handler_cd},
-	{NULL,NULL},
-};
+	int i;
 
+	printf("目前支持的内部命令如下:\n");
+	for(i = 0;innercmds[i].name != NULL;i++)
+		printf("%s\n",innercmds[i].name);
+
+}
 
 /* 解析并执行内部命令.返回1表示内部命令，否则返回0. */
 int inner()

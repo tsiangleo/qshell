@@ -22,9 +22,6 @@ typedef struct command
 {
 	char *args[MAXARGS+1];	/* 解析出的命令参数列表 */
 	int args_count;
-//	char *infile;
-//	char *outfile;
-
 	int infd;
 	int outfd;
 } cmd_t;
@@ -32,28 +29,48 @@ typedef struct command
 
 /* 命令数组. */
 extern	cmd_t	cmds[MAXCMDS];
+
 /* 输入的命令个数. */
 extern	int		cmds_count;
+
 /* 用户输入的内容. */
 extern	char 	inputline[MAXLINE+1];
 
+/* 输入串格式化后的内容. */
 extern char fmtline[MAXLINE+1];
 
 /* 输入重定向文件名. */
 extern	char 	infile[MAXNAME+1];
+
 /* 输出重定向文件名. */
 extern	char 	outfile[MAXNAME+1];
 
+/* 表示当前处理到输入串的那个位置了. */
 extern char *inputptr;
+
+/* 表示格式化的位置. */
 extern char *fmtptr;
+
+/* 标识输出重定向是否是以追加的方式. */
 extern int append;
+
+/* 标识是否是后台作业. */
 extern int background;
+
+/* 当有多个管道时，lastcpid用来记录执行最后一条命令的子进程id. */
 extern int lastcpid;
 
-extern char hostname[MAXLINE];	//主机名字
-extern char username[MAXLINE];	//登陆名
-extern char *homedir; //home目录
-extern char cwd[MAXLINE]; //当前工作目录
+/* 主机名字. */
+extern char hostname[MAXLINE];
+
+/* 登陆名. */
+extern char username[MAXLINE];
+
+/* home目录. */
+extern char *homedir;
+
+/* 当前工作目录. */
+extern char cwd[MAXLINE];
 
 
 #endif /* _DEF_H_ */

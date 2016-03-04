@@ -11,7 +11,7 @@
 void print_args()
 {
 	
-	printf("-----start-------\n");
+	printf("-----Debug Info Start-------\n");
 	int i,j;
 	printf("cmds_count:[%d]\n",cmds_count);
 	for(i = 0;i<cmds_count;i++)
@@ -22,32 +22,7 @@ void print_args()
 	}
 	printf("infile:[%s]\n",infile);
 	printf("outfile:[%s]\n",outfile);
-
-	/*
-	printf("inputline:[%s]\n",inputline);
-
-	printf("fmtline:[");
-	for(i = 0;i<MAXLINE;i++)
-	{
-		printf("%c",fmtline[i] == '\0' ? '#':fmtline[i]);
-	}
-	printf("]\n");
-
-	printf("infile:[");
-	for(i = 0;i<MAXNAME;i++)
-	{
-		printf("%c",infile[i] == '\0' ? '#':infile[i]);
-	}
-	printf("]\n");
-
-	printf("outfile:[");
-	for(i = 0;i<MAXNAME;i++)
-	{
-		printf("%c",outfile[i] == '\0' ? '#':outfile[i]);
-	}
-	printf("]\n");
-	*/
-	printf("-----end ------\n");
+	printf("-----Debug Info End  -------\n");
 }
 
 
@@ -137,7 +112,7 @@ int exec_cmd()
 				close(j);
 			
 			if(execvp(cmds[i].args[0],cmds[i].args) == -1)
-				perror("execvp");
+				fputs("unrecognized command\n",stderr);
 			exit(EXIT_FAILURE);
 		}
 	}
