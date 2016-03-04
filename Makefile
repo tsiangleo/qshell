@@ -1,8 +1,8 @@
 .PHONY:clean
 CC=gcc
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -DDEBUG2
 BIN=qshell
-OBJS=main.o init.o parser.o executor.o
+OBJS=main.o init.o parser.o executor.o inner.o common.o
 $(BIN):$(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@
 %.o:%.c

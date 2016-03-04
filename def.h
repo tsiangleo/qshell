@@ -48,7 +48,12 @@ extern char *inputptr;
 extern char *fmtptr;
 extern int append;
 extern int background;
+extern int lastcpid;
 
-void print_args();
+extern char hostname[MAXLINE];	//主机名字
+extern char username[MAXLINE];	//登陆名
+extern char *homedir; //home目录
+extern char cwd[MAXLINE]; //当前工作目录
+
 
 #endif /* _DEF_H_ */

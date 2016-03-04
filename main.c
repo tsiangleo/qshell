@@ -1,6 +1,7 @@
 #include "def.h"
 #include "init.h"
 #include "parser.h"
+#include "common.h"
 #include "executor.h"
 
 
@@ -15,6 +16,14 @@ char *inputptr;//自动机的指针执行输入串的某个位置.
 char *fmtptr;
 int append;
 int background;
+int lastcpid;
+
+
+char hostname[MAXLINE];	//主机名字
+char username[MAXLINE];	//登陆名
+char cwd[MAXLINE];	//当前工作目录
+char *homedir;
+
 
 int main()
 {
@@ -24,10 +33,12 @@ int main()
 	 * 3.执行命令，显示结果
 	 *
 	 * */
+	init();
 	while(1)
 	{
-		init();
-		get_cmd();
+		cleanup();
+		if(get_cmd() == -1)
+			continue;
 		parse_cmd();
 		exec_cmd();
 	}

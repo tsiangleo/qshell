@@ -1,39 +1,22 @@
 #include "def.h"
+#include "inner.h"
+#include "common.h"
 #include "parser.h"
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
-/* 获取用户输入的命令，保存到inputline中，包含\n。*/
-void get_cmd()
+/* 获取用户输入的命令，保存到inputline中，包含\n. 成功返回0,失败返回-1.*/
+int get_cmd()
 {
 	memset(inputline,0,sizeof(inputline));
-	fgets(inputline,sizeof(inputline),stdin);
-}
-
-
-/* 判断输入串中inputptr指向的当前位置是否包含str串，包含返回1,并移动inputptr指针；否则返回0.*/
-int contains(char *str)
-{
-	while(*inputptr == ' ' || *inputptr == '\t')
-		inputptr++; 	//跳过空白字符
-
-	char *p = inputptr;
-
-	while(*str != '\0' && *str == *p)
-	{
-		str++;
-		p++;
-	}
-
-
-	if(*str == '\0')
-	{
-		inputptr = p;
-		return 1;
-	}
+	if(fgets(inputline,sizeof(inputline),stdin) == NULL)
+		return -1;
 	return 0;
 }
+
+
+
 
 /* 从inputptr指向的位置解析第i个命令，并保存到cmds[i].*/
 void parse(int i)
@@ -61,7 +44,6 @@ void parse(int i)
 		}		
 		*fmtptr++ = '\0';
 
- //0cat0<0input.txt0|0grep0public0>0out.txt0&0
 		switch(*inputptr)
 		{
 			case '\t':
@@ -84,33 +66,9 @@ void parse(int i)
 }
 
 
-/* 从inputptr指向的位置开始获取文件名保存到file中.*/
-void getfile(char *file)
-{
 
-	while(*inputptr == ' ' || *inputptr == '\t')
-		inputptr++; 	//跳过空白字符
-	
-	while(*inputptr != '\0' &&
-			*inputptr != '<' &&
-			*inputptr != '>' &&
-			*inputptr != '|' &&
-			*inputptr != '&' &&
-			*inputptr != ' ' &&
-			*inputptr != '\t' &&
-			*inputptr != '\n' )
-		{
-			*file++  = *inputptr++;
-		}
-	*file = '\0';
-}
 
 /*
- ls -l |grep define & < def.h > tt
-
- ls -l |grep define < def.h > tt
-
-
  cmd [ < filename ] [ | cmd ]…[ or filename ] [ & ]
  其中方括号表示可选
  省略号(…)表示前面可以重复0次或多次
@@ -118,11 +76,19 @@ void getfile(char *file)
 
  cat < input.txt | grep public > out.txt &
 
- 0cat0<0input.txt0|0grep0public0>0out.txt0&0
-
+ * 解析命令.
+ * 成功返回解析到的命令个数，失败返回-1
+ *
  */
 int parse_cmd()
 {
+	if(contains("\n"))
+		return 0;
+
+	/* 解析是否是内部命令. */
+	if(inner())
+		return 0;
+
 	/* 解析第一条命令. */
 	parse(0);
 	/* 判断是否有输入重定向符.*/
@@ -159,7 +125,7 @@ int parse_cmd()
 	if(contains("\n"))
 	{
 		cmds_count = i;
-		return 1;
+		return cmds_count;
 	}
 	else
 	{
